@@ -1,0 +1,52 @@
+
+@startuml
+skinparam sequenceParticipant underline
+hide footbox
+
+actor "Cliente" as Cliente
+boundary ":Interfaz Pedido" as A
+control ":Controlador Pedido" as B
+entity ":Entidad Pedido" as C
+control ":Controlador Producto" as D
+entity ":Entidad Producto" as E
+
+activate Cliente
+Cliente -> A: 1:realizarPedido
+activate A
+activate B
+A -> B: 1.1:introducirDireccion
+A -> B: 1.2:IniciarPedido
+activate D
+B -> D: 1.2.1: listarProductos
+activate E
+D -> E: 1.2.1.1: recuperarProductos
+E --> D: 1.2.1.2: listaProductos
+deactivate E
+D --> B: 1.2.2: listaProductos
+deactivate D
+B -> A: 1.2.3: mostrarProductos
+
+
+
+Cliente -> A: 2:seleccionarProducto
+deactivate B
+activate D
+A -> D: 2.1: recuperarDatosProducto
+activate E 
+D -> E: 2.1.1: recuperaDatos
+E --> D: 2.1.2: datosProducto
+deactivate E
+D -> A: 2.1.3: mostrarDatosProducto
+
+
+Cliente -> A: 3: confirmarSeleccion
+A -> B: 3.1: confirmarPedido
+activate B
+B -> C: 3.1.1: regristarPedido
+activate C
+C --> B: 3.1.2: IDPedido 
+deactivate C
+B -> A: 3.1.3: muestraID
+deactivate B
+deactivate A
+@enduml
